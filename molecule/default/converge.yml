@@ -1,6 +1,6 @@
 - name: Converge
   hosts: all
-  gather_facts: false
+  gather_facts: true
   become: true
 
   vars:
@@ -23,5 +23,4 @@
     - name: Include additional roles dynamically
       include_role:
         name: "{{ item }}"
-        src: "../roles/{{ item }}"
       loop: "{{ roles_to_include }}"
