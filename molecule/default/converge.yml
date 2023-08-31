@@ -1,36 +1,11 @@
-- name: Fail if molecule group is missing
-  hosts: localhost
-  tasks:
-    - name: Print some info
-      ansible.builtin.debug:
-        msg: "{{ groups }}"
-
-    - name: Assert group existence
-      ansible.builtin.assert:
-        that: "'molecule' in groups"
-        fail_msg: |
-          molecule group was not found inside inventory groups: {{ groups }}
-
 - name: Converge
-  hosts: molecule
-  # We disable gather facts because it would fail due to our container not
-  # having python installed. This will not prevent use from running 'raw'
-  # commands. Most molecule users are expected to use containers that already
-  # have python installed in order to avoid notable delays installing it.
+  hosts: all
   gather_facts: false
   tasks:
-    - name: Check uname
-      ansible.builtin.raw: uname -a
-      register: result
-      changed_when: false
-
-    - name: Print some info
-      ansible.builtin.assert:
-        that: result.stdout | regex_search("^Linux")
 
     - name: If missing, install Python3
       raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
-      changed_when: False
+      changed_when: false
 
     - name: Testing role
       ansible.builtin.include_role:

@@ -1,15 +1,15 @@
 ---
-dependency:
-  name: galaxy
 driver:
-  name: docker
+  name: vagrant
+  provider:
+    name: VBox
+
 platforms:
-  - name: instance
-    image: ubuntu:20.04  # Use an appropriate base image
-    privileged: true
+  - name: vagrant-ubuntu
+    box: generic/ubuntu2004
+    memory: 512
+    cpus: 1
+
 provisioner:
   name: ansible
-scenario:
-  name: default
-verifier:
-  name: ansible
+
