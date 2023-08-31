@@ -1,12 +1,11 @@
 - name: Converge
   hosts: all
   gather_facts: false
+  become: true
   tasks:
-
     - name: If missing, install Python3
       raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
       changed_when: false
-
     - name: Testing role
       ansible.builtin.include_role:
         name: tonyn.lido
