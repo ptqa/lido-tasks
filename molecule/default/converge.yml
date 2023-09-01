@@ -5,22 +5,23 @@
 
   vars:
     roles_to_include:
-      - alertmanager
-      - grafana
       - cadvisor
-      - prometheus
-      - loki
-      - node_exporter
 
   roles:
-    - geerlingguy.docker
+    - role: geerlingguy.docker
+    - role: dominiquefuchs.grafana_compose
+      vars:
+        gc_enable_acme_proxy: false
+        gc_service_manage: true
 
-  tasks:
+  pre_tasks:
     - name: If missing, install Python3
-      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
+      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3 acl)
       changed_when: false
 
-    - name: Include additional roles dynamically
-      include_role:
-        name: "{{ item }}"
-      loop: "{{ roles_to_include }}"
+    - name: Install packages
+      package:
+        name: acl
+        state: present
+
+

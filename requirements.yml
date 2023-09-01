@@ -1,2 +1,3 @@
 # from galaxy
 - src: geerlingguy.docker
+- src: dominiquefuchs.grafana_compose
