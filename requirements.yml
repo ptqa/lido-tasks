@@ -1,5 +1,7 @@
-# from galaxy
-- src: geerlingguy.docker
-- src: geerlingguy.node_exporter
-- src: ome.cadvisor
-- src: dominiquefuchs.grafana_compose
+roles:
+  - src: geerlingguy.docker
+  - src: geerlingguy.node_exporter
+  - src: ome.cadvisor
+  - src: dominiquefuchs.grafana_compose
+collections:
+  - community.grafana
