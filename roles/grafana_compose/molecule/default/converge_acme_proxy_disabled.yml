@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: dominiquefuchs.grafana_compose
+      vars:
+        gc_enable_acme_proxy: false
+        gc_service_manage: true

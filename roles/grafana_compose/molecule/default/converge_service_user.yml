@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  pre_tasks:
+    - name: Ensure user exists
+      ansible.builtin.user:
+        name: test_user
+        groups: docker
+        append: yes
+
+  roles:
+    - role: dominiquefuchs.grafana_compose
+      vars:
+        gc_service_user: test_user
+        gc_service_manage: true

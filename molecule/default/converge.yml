@@ -10,7 +10,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.node_exporter
     - role: ome.cadvisor
-    - role: dominiquefuchs.grafana_compose
+    - role: grafana_compose
       vars:
         gc_enable_acme_proxy: false
         gc_service_manage: true

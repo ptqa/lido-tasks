@@ -1,14 +1,5 @@
 ---
-- name: Add prometheus datasource
-  grafana_datasource:
-    grafana_url: "http://{{ ansible_default_ipv4.address }}:3000"
-    grafana_user: "grafana_admin"
-    grafana_password: "{{ grafana_pass }}"
-    name: prometheus
-    ds_type: prometheus
-    ds_url: "http://{{ ansible_default_ipv4.address }}:9090"
-
-- name: Import USE dashbord
+- name: Import node exporter dashboard
   grafana_dashboard:
     grafana_url: "http://{{ ansible_default_ipv4.address }}:3000"
     grafana_user: "grafana_admin"
