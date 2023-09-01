@@ -19,6 +19,7 @@
         gc_prometheus_bind_addresses: ['0.0.0.0']
         gc_grafana_bind_addresses: ['0.0.0.0']
         gc_grafana_password: mygrafanapass
+        gc_node_exporters: ["{{ ansible_default_ipv4.address }}:9100"]
 
   pre_tasks:
     - name: If missing, install Python3
