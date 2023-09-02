@@ -8,6 +8,14 @@
 
   roles:
     - role: geerlingguy.docker
+      vars:
+        docker_daemon_options:
+          log-driver: loki
+          log-opts:
+            loki-url: "http://{{ ansible_default_ipv4.address }}:3100/loki/api/v1/push"
+            mode: non-blocking
+
+    - role: loki_driver
     - role: geerlingguy.node_exporter
     - role: grafana_compose
       vars:

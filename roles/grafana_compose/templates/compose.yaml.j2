@@ -1,3 +1,4 @@
+---
 networks:
   gc-compose:
 
@@ -58,7 +59,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
+    container_name: gc-cadvisor
     ports:
       - 8080:8080
     volumes:
