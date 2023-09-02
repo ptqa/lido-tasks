@@ -34,6 +34,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: gc-prometheus
+    user: root
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
 {% if gc_prometheus_bind_mount_dir_sanitized %}
@@ -41,6 +42,7 @@ services:
 {% else %}
       - prometheus-data:/prometheus
 {% endif %}
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
       - '--storage.tsdb.path=/prometheus'
