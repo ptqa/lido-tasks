@@ -1,6 +1,5 @@
 roles:
   - src: geerlingguy.docker
   - src: geerlingguy.node_exporter
-  - src: ome.cadvisor
 collections:
   - community.grafana
