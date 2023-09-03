@@ -1,0 +1,24 @@
+---
+- name: Check docker package status
+  package:
+    name: docker-ce
+    state: present
+  check_mode: yes
+  register: pkg_status
+ 
+- name: Test docker package is installed
+  assert:
+    that:
+      - not pkg_status.changed
+
+- name: Check docker service status
+  ansible.builtin.service:
+    name: docker
+    state: started
+  check_mode: yes
+  register: service_status
+
+- name: Test docker service is running
+  assert:
+    that:
+      - not service_status.changed
