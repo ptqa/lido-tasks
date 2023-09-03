@@ -7,4 +7,4 @@
     - role: dominiquefuchs.grafana_compose
       vars:
         gc_service_manage: true
-        gc_node_exporters: ['127.0.0.1:9100', '127.0.0.1:9100']
+        gc_node_exporters: [127.0.0.1:9100, 127.0.0.1:9100]

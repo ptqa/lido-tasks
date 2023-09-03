@@ -1,5 +1,6 @@
+---
 - name: Restart grafana-compose service
   ansible.builtin.service:
     name: grafana-compose
-    state: 'restarted'
+    state: restarted
   when: gc_service_manage | bool and gc_service_state == 'started' and not gc_systemd_state.changed

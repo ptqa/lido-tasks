@@ -1,10 +1,11 @@
+---
 - name: Converge
   hosts: all
   gather_facts: true
   become: true
 
   vars:
-    grafana_pass: "grafana#@!"
+    grafana_pass: grafana#@!
 
   pre_tasks:
     - name: If missing, install Python3
@@ -28,7 +29,7 @@
         docker_daemon_options:
           log-driver: loki
           log-opts:
-            loki-url: "http://{{ ansible_default_ipv4.address }}:3100/loki/api/v1/push"
+            loki-url: http://{{ ansible_default_ipv4.address }}:3100/loki/api/v1/push
             mode: non-blocking
 
     - role: geerlingguy.node_exporter
@@ -36,10 +37,9 @@
       vars:
         gc_enable_acme_proxy: false
         gc_service_manage: true
-        gc_loki_bind_addresses: ['0.0.0.0']
-        gc_prometheus_bind_addresses: ['0.0.0.0']
-        gc_grafana_bind_addresses: ['0.0.0.0']
+        gc_loki_bind_addresses: ["0.0.0.0"]
+        gc_prometheus_bind_addresses: ["0.0.0.0"]
+        gc_grafana_bind_addresses: ["0.0.0.0"]
         gc_grafana_password: "{{ grafana_pass }}"
         gc_node_exporters: ["{{ ansible_default_ipv4.address }}:9100"]
     - role: grafana_manage
-

@@ -1,5 +1,4 @@
 ---
-
 - name: Verify
   hosts: all
   gather_facts: false
@@ -18,7 +17,7 @@
 
     - name: Found error logs - printing nicely
       ansible.builtin.debug:
-        msg: '{{ docker_logs.stdout_lines }}'
+        msg: "{{ docker_logs.stdout_lines }}"
       when: '"level=error" in docker_logs.stdout'
 
     - name: Fail if there are no errors in compose output

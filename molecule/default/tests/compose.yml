@@ -3,7 +3,7 @@
   ansible.builtin.service:
     name: grafana-compose
     state: started
-  check_mode: yes
+  check_mode: true
   register: service_status
 
 - name: Test grafana_compose service is running

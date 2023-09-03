@@ -3,9 +3,9 @@
   package:
     name: docker-ce
     state: present
-  check_mode: yes
+  check_mode: true
   register: pkg_status
- 
+
 - name: Test docker package is installed
   assert:
     that:
@@ -15,7 +15,7 @@
   ansible.builtin.service:
     name: docker
     state: started
-  check_mode: yes
+  check_mode: true
   register: service_status
 
 - name: Test docker service is running

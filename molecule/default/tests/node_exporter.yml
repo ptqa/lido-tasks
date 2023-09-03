@@ -3,9 +3,9 @@
   file:
     path: /usr/local/bin/node_exporter
     state: file
-  check_mode: yes
+  check_mode: true
   register: file_status
- 
+
 - name: Test node_exporter exists
   assert:
     that:
@@ -15,7 +15,7 @@
   service:
     name: node_exporter
     state: started
-  check_mode: yes
+  check_mode: true
   register: service_status
 
 - name: Test node_exporter service is running

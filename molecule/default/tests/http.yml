@@ -1,22 +1,22 @@
 ---
 - name: Check that grafana HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:3000/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:3000/metrics
 - name: Check that loki HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:3100/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:3100/metrics
 - name: Check that prometheus HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:9090/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:9090/metrics
 - name: Check that alertmanager HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:9093/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:9093/metrics
 - name: Check that cadvisor HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:8080/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:8080/metrics
 - name: Check that cadvisor HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:8080/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:8080/metrics
 - name: Check that node exporter HTTP metrics endpoint is available
   ansible.builtin.uri:
-    url: "http://{{ ansible_default_ipv4.address }}:9100/metrics"
+    url: http://{{ ansible_default_ipv4.address }}:9100/metrics

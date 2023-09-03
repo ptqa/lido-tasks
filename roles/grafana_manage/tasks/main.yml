@@ -1,9 +1,9 @@
 ---
 - name: Wait until Grafana HTTP status is 200
-  uri:
-    url: "http://{{ ansible_default_ipv4.address }}:3000"
-    return_content: yes
-    validate_certs: no
+  ansible.builtin.uri:
+    url: http://{{ ansible_default_ipv4.address }}:3000
+    return_content: true
+    validate_certs: false
     status_code:
       - 200
   until: uri_output.status == 200
@@ -12,8 +12,8 @@
   register: uri_output
 
 - name: Import node exporter dashboard
-  grafana_dashboard:
-    grafana_url: "http://{{ ansible_default_ipv4.address }}:3000"
-    grafana_user: "grafana_admin"
+  community.grafana.grafana_dashboard:
+    grafana_url: http://{{ ansible_default_ipv4.address }}:3000
+    grafana_user: grafana_admin
     grafana_password: "{{ grafana_pass }}"
     dashboard_url: https://grafana.com/api/dashboards/1860/revisions/32/download

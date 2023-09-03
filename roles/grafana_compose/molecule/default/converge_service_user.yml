@@ -8,7 +8,7 @@
       ansible.builtin.user:
         name: test_user
         groups: docker
-        append: yes
+        append: true
 
   roles:
     - role: dominiquefuchs.grafana_compose

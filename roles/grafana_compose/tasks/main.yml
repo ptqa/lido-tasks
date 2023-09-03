@@ -4,8 +4,8 @@
   vars:
     params:
       files:
-        - '{{ ansible_distribution }}.yml'
-        - '{{ ansible_os_family }}.yml'
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
         - main.yml
       paths:
         - vars
@@ -18,7 +18,7 @@
 
 - name: Setting docker binary path
   ansible.builtin.set_fact:
-    gc_docker_bin_dir: '{{ gc_command_docker_result.stdout | dirname }}'
+    gc_docker_bin_dir: "{{ gc_command_docker_result.stdout | dirname }}"
   changed_when: false
   when: not gc_docker_bin_dir
 
@@ -31,114 +31,114 @@
 
 - name: Ensure Grafana Compose serving directories exist
   ansible.builtin.file:
-    path: '{{ item.path }}'
+    path: "{{ item.path }}"
     state: directory
-    owner: '{{ gc_service_user }}'
-    group: '{{ gc_service_user }}'
+    owner: "{{ gc_service_user }}"
+    group: "{{ gc_service_user }}"
     recurse: true
   loop:
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources'
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d'
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources"
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d"
   notify: Restart grafana-compose service
 
 - name: Ensure .env and configuration files exist and are up to date
   ansible.builtin.template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    owner: '{{ gc_service_user }}'
-    group: '{{ gc_service_user }}'
-    mode: '{{ item.mode }}'
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ gc_service_user }}"
+    group: "{{ gc_service_user }}"
+    mode: "{{ item.mode }}"
   loop:
     - src: .env.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/.env'
-      mode: '600'
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/.env"
+      mode: "600"
     - src: alertmanager.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml'
-      mode: '640'
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml"
+      mode: "640"
     - src: loki.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml'
-      mode: '640'
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml"
+      mode: "640"
     - src: prometheus.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml'
-      mode: '640'
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml"
+      mode: "640"
     - src: grafana_datasources.yaml.j2
-      dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
-      mode: '640'
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml"
+      mode: "640"
   notify: Restart grafana-compose service
 
 - name: Download file and force basic auth
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/samber/awesome-prometheus-alerts/master/dist/rules/host-and-hardware/node-exporter.yml
-    dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml'
-    mode: '640'
+    dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml"
+    mode: "640"
   notify: Restart grafana-compose service
 
 - name: Ensure needed vhost configuration file exists
   ansible.builtin.copy:
     src: nginx_vhost.conf
-    dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d/default'
-    owner: '{{ gc_service_user }}'
-    group: '{{ gc_service_user }}'
+    dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/nginx/vhost.d/default"
+    owner: "{{ gc_service_user }}"
+    group: "{{ gc_service_user }}"
     force: false
   when: gc_enable_acme_proxy and gc_nginx_no_robots
   notify: Restart grafana-compose service
 
 - name: Set ACL for bind mounted configuration files
   ansible.posix.acl:
-    path: '{{ item.path }}'
-    entity: '{{ item.entity }}'
+    path: "{{ item.path }}"
+    entity: "{{ item.entity }}"
     etype: user
     permissions: r
     state: present
   loop:
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml'
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/alertmanager.yaml"
       entity: 65534
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml'
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml"
       entity: 10001
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml'
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml"
       entity: 65534
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml'
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml"
       entity: 65534
-    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml"
       entity: 472
   register: bind_mount_acl
 
 - name: Ensure Grafana Compose file exists and is up to date
   ansible.builtin.template:
     src: compose.yaml.j2
-    dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/compose.yaml'
-    owner: '{{ gc_service_user }}'
-    group: '{{ gc_service_user }}'
-    mode: '0640'
+    dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/compose.yaml"
+    owner: "{{ gc_service_user }}"
+    group: "{{ gc_service_user }}"
+    mode: "0640"
   notify: Restart grafana-compose service
 
 - name: Ensure Grafana Compose bind mount directories exist
   ansible.builtin.file:
-    path: '{{ item.path }}'
+    path: "{{ item.path }}"
     state: directory
-    owner: '{{ gc_service_user }}'
-    group: '{{ gc_service_user }}'
+    owner: "{{ gc_service_user }}"
+    group: "{{ gc_service_user }}"
   loop:
-    - path: '{{ gc_loki_bind_mount_dir_sanitized }}'
-    - path: '{{ gc_grafana_bind_mount_dir_sanitized }}'
-    - path: '{{ gc_nginx_log_bind_mount_dir_sanitized }}'
-    - path: '{{ gc_prometheus_bind_mount_dir }}'
+    - path: "{{ gc_loki_bind_mount_dir_sanitized }}"
+    - path: "{{ gc_grafana_bind_mount_dir_sanitized }}"
+    - path: "{{ gc_nginx_log_bind_mount_dir_sanitized }}"
+    - path: "{{ gc_prometheus_bind_mount_dir }}"
   when: item.path
   notify: Restart grafana-compose service
 
 - name: Set ACL for bind mounted data directories
   ansible.posix.acl:
-    path: '{{ item.path }}'
-    entity: '{{ item.entity }}'
+    path: "{{ item.path }}"
+    entity: "{{ item.entity }}"
     etype: user
     permissions: rwx
     state: present
   loop:
-    - path: '{{ gc_loki_bind_mount_dir_sanitized }}'
+    - path: "{{ gc_loki_bind_mount_dir_sanitized }}"
       entity: 10001
-    - path: '{{ gc_grafana_bind_mount_dir_sanitized }}'
+    - path: "{{ gc_grafana_bind_mount_dir_sanitized }}"
       entity: 472
-    - path: '{{ gc_prometheus_bind_mount_dir }}'
+    - path: "{{ gc_prometheus_bind_mount_dir }}"
       entity: 65534
   when: item.path
 
@@ -148,14 +148,14 @@
     dest: /etc/systemd/system/grafana-compose.service
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   when: gc_service_manage | bool
 
 - name: Ensure Grafana Compose service is enabled and started
   ansible.builtin.service:
     name: grafana-compose
     daemon_reload: true
-    state: '{{ gc_service_state }}'
-    enabled: '{{ gc_service_enabled }}'
+    state: "{{ gc_service_state }}"
+    enabled: "{{ gc_service_enabled }}"
   when: gc_service_manage | bool
   register: gc_systemd_state
