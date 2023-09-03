@@ -4,9 +4,11 @@
   gather_facts: true
   become: true
   tasks:
-    - name: Include docker tests
-      ansible.builtin.import_tasks:
-        file: tests/docker.yml
-    - name: Include http tests
-      ansible.builtin.import_tasks:
-        file: tests/http.yml
+    - name: Include tests
+      include_tasks:
+        file: "{{ item }}"
+      loop:
+        - tests/docker.yml
+        - tests/node_exporter.yml
+        - tests/compose.yml
+        - tests/http.yml

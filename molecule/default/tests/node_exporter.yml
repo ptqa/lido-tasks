@@ -1,0 +1,24 @@
+---
+- name: Check node_exporter file status
+  file:
+    path: /usr/local/bin/node_exporter
+    state: file
+  check_mode: yes
+  register: file_status
+ 
+- name: Test node_exporter exists
+  assert:
+    that:
+      - not file_status.changed
+
+- name: Check node_exporter service status
+  service:
+    name: node_exporter
+    state: started
+  check_mode: yes
+  register: service_status
+
+- name: Test node_exporter service is running
+  assert:
+    that:
+      - not service_status.changed

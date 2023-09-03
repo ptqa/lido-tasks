@@ -1,0 +1,12 @@
+---
+- name: Check grafana_compose service status
+  ansible.builtin.service:
+    name: grafana-compose
+    state: started
+  check_mode: yes
+  register: service_status
+
+- name: Test grafana_compose service is running
+  assert:
+    that:
+      - not service_status.changed
