@@ -19,6 +19,7 @@
 
     - name: If missing, install docker
       ansible.builtin.raw: test -e /usr/bin/docker || (apt -y update && apt install -y docker.io)
+      changed_when: false
 
     - name: Include loki driver
       ansible.builtin.include_role:
