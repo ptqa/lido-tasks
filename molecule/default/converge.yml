@@ -8,18 +8,18 @@
 
   pre_tasks:
     - name: If missing, install Python3
-      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
+      ansible.builtin.raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
       changed_when: false
 
     - name: Install packages
-      package:
+      ansible.builtin.package:
         name: acl
         state: present
 
     - name: If missing, install docker
-      raw: test -e /usr/bin/docker || (apt -y update && apt install -y docker.io)
+      ansible.builtin.raw: test -e /usr/bin/docker || (apt -y update && apt install -y docker.io)
 
-    - include_role:
+    - ansible.builtin.include_role:
         name: loki_driver
 
   roles:
