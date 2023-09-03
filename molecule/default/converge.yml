@@ -4,44 +4,5 @@
   gather_facts: true
   become: true
 
-  vars:
-    grafana_pass: grafana#@!
-
-  pre_tasks:
-    - name: If missing, install Python3
-      ansible.builtin.raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
-      changed_when: false
-
-    - name: Install packages
-      ansible.builtin.package:
-        name: acl
-        state: present
-
-    - name: If missing, install docker
-      ansible.builtin.raw: test -e /usr/bin/docker || (apt -y update && apt install -y docker.io)
-      changed_when: false
-
-    - name: Include loki driver
-      ansible.builtin.include_role:
-        name: loki_driver
-
-  roles:
-    - role: geerlingguy.docker
-      vars:
-        docker_daemon_options:
-          log-driver: loki
-          log-opts:
-            loki-url: http://{{ ansible_default_ipv4.address }}:3100/loki/api/v1/push
-            mode: non-blocking
-
-    - role: geerlingguy.node_exporter
-    - role: grafana_compose
-      vars:
-        gc_enable_acme_proxy: false
-        gc_service_manage: true
-        gc_loki_bind_addresses: ["0.0.0.0"]
-        gc_prometheus_bind_addresses: ["0.0.0.0"]
-        gc_grafana_bind_addresses: ["0.0.0.0"]
-        gc_grafana_password: "{{ grafana_pass }}"
-        gc_node_exporters: ["{{ ansible_default_ipv4.address }}:9100"]
-    - role: grafana_manage
+- name: Include main play
+  ansible.builtin.import_playbook: ../../site.yml
