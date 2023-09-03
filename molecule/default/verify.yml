@@ -1,0 +1,39 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Check docker package status
+      package:
+        name: docker-ce
+        state: present
+      check_mode: yes
+      register: pkg_status
+     
+    - name: Test docker package is installed
+      assert:
+        that:
+          - not pkg_status.changed
+
+    - name: Check that grafana HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:3000/metrics"
+    - name: Check that loki HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:3100/metrics"
+    - name: Check that prometheus HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:9090/metrics"
+    - name: Check that alertmanager HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:9093/metrics"
+    - name: Check that cadvisor HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:8080/metrics"
+    - name: Check that cadvisor HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:8080/metrics"
+    - name: Check that node exporter HTTP metrics endpoint is available
+      ansible.builtin.uri:
+        url: "http://{{ ansible_default_ipv4.address }}:9100/metrics"
