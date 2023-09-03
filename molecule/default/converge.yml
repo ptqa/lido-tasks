@@ -6,6 +6,22 @@
   vars:
     grafana_pass: "grafana#@!"
 
+  pre_tasks:
+    - name: If missing, install Python3
+      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
+      changed_when: false
+
+    - name: Install packages
+      package:
+        name: acl
+        state: present
+
+    - name: If missing, install docker
+      raw: test -e /usr/bin/docker || (apt -y update && apt install -y docker.io)
+
+    - include_role:
+        name: loki_driver
+
   roles:
     - role: geerlingguy.docker
       vars:
@@ -15,7 +31,6 @@
             loki-url: "http://{{ ansible_default_ipv4.address }}:3100/loki/api/v1/push"
             mode: non-blocking
 
-    - role: loki_driver
     - role: geerlingguy.node_exporter
     - role: grafana_compose
       vars:
@@ -27,15 +42,4 @@
         gc_grafana_password: "{{ grafana_pass }}"
         gc_node_exporters: ["{{ ansible_default_ipv4.address }}:9100"]
     - role: grafana_manage
-
-  pre_tasks:
-    - name: If missing, install Python3
-      raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3 acl)
-      changed_when: false
-
-    - name: Install packages
-      package:
-        name: acl
-        state: present
-
 

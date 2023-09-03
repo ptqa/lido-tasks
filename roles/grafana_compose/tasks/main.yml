@@ -66,6 +66,13 @@
       mode: '640'
   notify: Restart grafana-compose service
 
+- name: Download file and force basic auth
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/samber/awesome-prometheus-alerts/master/dist/rules/host-and-hardware/node-exporter.yml
+    dest: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml'
+    mode: '640'
+  notify: Restart grafana-compose service
+
 - name: Ensure needed vhost configuration file exists
   ansible.builtin.copy:
     src: nginx_vhost.conf
@@ -89,6 +96,8 @@
     - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/loki.yaml'
       entity: 10001
     - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml'
+      entity: 65534
+    - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml'
       entity: 65534
     - path: '{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml'
       entity: 472

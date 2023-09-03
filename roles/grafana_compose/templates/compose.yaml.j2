@@ -38,6 +38,7 @@ services:
     user: root
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./config/prom-rules.yaml:/etc/prometheus/prom-rules.yaml
 {% if gc_prometheus_bind_mount_dir_sanitized %}
       - - {{ gc_prometheus_bind_mount_dir_sanitized }}:/prometheus
 {% else %}
