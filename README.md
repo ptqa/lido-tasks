@@ -69,10 +69,6 @@ This project includes automated tests using Molecule and Vagrant to ensure the c
 
 Molecule will create virtual machines using Vagrant, apply Ansible roles and playbooks, and then run tests to verify the configuration.
 
-## Contributing
-
-Contributions are welcome! If you find any issues or want to improve this project, please open an issue or submit a pull request. For more information, refer to the [contribution guidelines](CONTRIBUTING.md).
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE). Feel free to use and modify it for your own purposes.
