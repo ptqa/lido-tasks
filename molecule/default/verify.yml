@@ -11,4 +11,5 @@
         - tests/docker.yml
         - tests/node_exporter.yml
         - tests/compose.yml
+        - tests/containers.yml
         - tests/http.yml

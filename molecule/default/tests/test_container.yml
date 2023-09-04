@@ -1,0 +1,12 @@
+---
+- name: "Check docker container {{ item }}"
+  community.docker.docker_container:
+    name: "{{ item }}"
+    state: started
+  check_mode: true
+  register: container_status
+
+- name: Test docker container is running
+  assert:
+    that:
+      - not container_status.changed

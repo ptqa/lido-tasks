@@ -1,0 +1,9 @@
+---
+- name: Check docker container
+  include_tasks: tests/test_container.yml
+  loop:
+    - gc-grafana
+    - gc-loki
+    - gc-cadvisor
+    - gc-prometheus
+    - gc-alertmanager
