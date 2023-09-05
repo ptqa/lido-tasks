@@ -64,6 +64,9 @@
     - src: grafana_datasources.yaml.j2
       dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml"
       mode: "640"
+    - src: promtail.yaml.j2
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/promtail.yaml"
+      mode: "640"
   notify: Restart grafana-compose service
 
 - name: Download file and force basic auth

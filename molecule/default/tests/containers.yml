@@ -7,3 +7,4 @@
     - gc-cadvisor
     - gc-prometheus
     - gc-alertmanager
+    - gc-promtail

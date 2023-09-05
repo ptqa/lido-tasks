@@ -9,3 +9,4 @@
     - { name: alertmanager, port: 9093 }
     - { name: cadvisor, port: 8080 }
     - { name: node_exporter, port: 9100 }
+    - { name: promtail, port: 9080 }
