@@ -17,3 +17,19 @@
     grafana_user: grafana_admin
     grafana_password: "{{ grafana_pass }}"
     dashboard_url: https://grafana.com/api/dashboards/1860/revisions/32/download
+
+- name: Add USE dashboard file
+  ansible.builtin.copy:
+    src: use_dashboard.json
+    dest: /tmp/use_dashboard.json
+    mode: '0644'
+
+- name: Import USE dashboard
+  community.grafana.grafana_dashboard:
+    grafana_url: http://{{ ansible_default_ipv4.address }}:3000
+    grafana_user: grafana_admin
+    grafana_password: "{{ grafana_pass }}"
+    state: present
+    commit_message: Updated by ansible
+    overwrite: true
+    path: /tmp/use_dashboard.json
