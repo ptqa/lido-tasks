@@ -4,3 +4,5 @@ roles:
   - src: geerlingguy.node_exporter
 collections:
   - community.grafana
+  - name: community.docker
+    version: '>=3.4.8'

@@ -23,9 +23,16 @@ To install the monitoring stack, follow these steps:
    lido-tasks
    ```
 
-2. Add the `inventory.yml` file to define your target hosts and customize configuration variables in the `group_vars` directory as needed.
+2. Add the `inventory.yml` file (see `inventory_example.yml`) to define your target hosts and customize configuration variables in the `group_vars` directory as needed.
 
-3. Run the Ansible playbook to install the monitoring stack components:
+3. Install dependecies:
+
+
+  ```bash
+  ansible-galaxy install -r requirements.yml
+  ```
+
+4. Run the Ansible playbook to install the monitoring stack components:
 
    ```bash
    ansible-playbook -i inventory.yml site.yml
