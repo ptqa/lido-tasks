@@ -28,6 +28,7 @@
   roles:
     - role: geerlingguy.docker
       vars:
+        docker_compose_version: "v2.11.1"
         docker_daemon_options:
           log-driver: loki
           log-opts:
@@ -35,8 +36,16 @@
             mode: non-blocking
 
     - role: geerlingguy.node_exporter
+      vars:
+        node_exporter_version: "1.6.1"
     - role: grafana_compose
       vars:
+        gc_alermanager_version: "v0.26.0"
+        gc_loki_version: "2.9.0"
+        gc_promtail_version: "2.9.0"
+        gc_prometheus_version: "v2.47.0"
+        gc_cadvisor_version: "v0.47.2"
+        gc_grafana_version: "10.0.5"
         gc_enable_acme_proxy: false
         gc_service_manage: true
         gc_loki_bind_addresses: ["0.0.0.0"]

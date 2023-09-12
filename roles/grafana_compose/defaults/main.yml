@@ -33,3 +33,10 @@ gc_alertmanager_default_receiver: black-hole
 gc_alertmanager_receivers: []
 ### Prometheus ###
 gc_node_exporters: []
+### Versions ###
+gc_alermanager_version: latest
+gc_loki_version: latest
+gc_promtail_version: latest
+gc_prometheus_version: latest
+gc_cadvisor_version: latest
+gc_grafana_version: latest
