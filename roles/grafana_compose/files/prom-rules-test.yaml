@@ -26,3 +26,25 @@ tests:
             exp_annotations:
               summary: "Host memory under memory pressure (instance localhost:9100)"
               description: "The node is under heavy memory pressure. High rate of major page faults\n  VALUE = 2000\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
+
+  - interval: 1m
+    input_series:
+      - series: 'node_memory_MemAvailable_bytes{instance="localhost:9100"}'
+        values: '12000-1000x10'
+      - series: 'node_memory_MemTotal_bytes{instance="localhost:9100"}'
+        values: '100000x10'
+      - series: 'node_uname_info{instance="localhost:9100", nodename="localhost"}'
+        values: '1x10'
+
+    # Unit test for the "HostOutOfMemory" alerting rule.
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: HostOutOfMemory
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              instance: localhost:9100
+              nodename: localhost
+            exp_annotations:
+              summary: Host out of memory (instance localhost:9100)
+              description: "Node memory is filling up (< 10% left)\n  VALUE = 7.000000000000001\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
