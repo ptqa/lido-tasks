@@ -69,11 +69,28 @@
       mode: "640"
   notify: Restart grafana-compose service
 
-- name: Download file and force basic auth
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/samber/awesome-prometheus-alerts/master/dist/rules/host-and-hardware/node-exporter.yml
-    dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml"
-    mode: "640"
+- name: Add prom alerts
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - src: prom-rules.yaml
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml"
+      mode: "640"
+    - src: prom-docker-rules.yaml
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-docker-rules.yaml"
+      mode: "640"
+    - src: prom-self-rules.yaml
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-self-rules.yaml"
+      mode: "640"
+    - src: prom-loki-rules.yaml
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-loki-rules.yaml"
+      mode: "640"
+    - src: prom-tail-rules.yaml
+      dest: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-tail-rules.yaml"
+      mode: "640"
+
   notify: Restart grafana-compose service
 
 - name: Ensure needed vhost configuration file exists
@@ -101,6 +118,12 @@
     - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prometheus.yaml"
       entity: 65534
     - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-rules.yaml"
+      entity: 65534
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-docker-rules.yaml"
+      entity: 65534
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-loki-rules.yaml"
+      entity: 65534
+    - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/prom-tail-rules.yaml"
       entity: 65534
     - path: "{{ gc_base_directory_sanitized }}/GrafanaCompose/config/grafana/provisioning/datasources/ds.yaml"
       entity: 472

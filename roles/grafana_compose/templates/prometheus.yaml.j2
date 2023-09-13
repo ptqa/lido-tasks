@@ -4,6 +4,10 @@ global:
 
 rule_files:
   - prom-rules.yaml
+  - prom-self-rules.yaml
+  - prom-docker-rules.yaml
+  - prom-loki-rules.yaml
+  - prom-tail-rules.yaml
 
 scrape_configs:
   - job_name: prometheus

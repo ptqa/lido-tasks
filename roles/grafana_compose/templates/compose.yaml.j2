@@ -53,6 +53,10 @@ services:
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - ./config/prom-rules.yaml:/etc/prometheus/prom-rules.yaml
+      - ./config/prom-docker-rules.yaml:/etc/prometheus/prom-docker-rules.yaml
+      - ./config/prom-loki-rules.yaml:/etc/prometheus/prom-loki-rules.yaml
+      - ./config/prom-tail-rules.yaml:/etc/prometheus/prom-tail-rules.yaml
+      - ./config/prom-self-rules.yaml:/etc/prometheus/prom-self-rules.yaml
 {% if gc_prometheus_bind_mount_dir_sanitized %}
       - - {{ gc_prometheus_bind_mount_dir_sanitized }}:/prometheus
 {% else %}
