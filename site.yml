@@ -17,15 +17,9 @@
         name: acl
         state: present
 
-    - name: If missing, install docker
-      ansible.builtin.raw: test -e /usr/bin/docker || (apt -y update && apt install -y docker.io)
-      changed_when: false
-
-    - name: Include loki driver
-      ansible.builtin.include_role:
-        name: loki_driver
 
   roles:
+    - role: loki_driver
     - role: geerlingguy.docker
       vars:
         docker_compose_version: "v2.11.1"
