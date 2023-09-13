@@ -1,0 +1,28 @@
+# This is the main input for unit testing.
+# Only this file is passed as a command-line argument.
+
+rule_files:
+  - prom-rules.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'node_vmstat_pgmajfault{instance="localhost:9100"}'
+        values: '0+120000x10'
+      - series: 'node_uname_info{instance="localhost:9100", nodename="localhost"}'
+        values: '1x10'
+
+    # Unit test for the "HostMemoryUnderMemoryPressure" alerting rule.
+    alert_rule_test:
+      - eval_time: 9m
+        alertname: HostMemoryUnderMemoryPressure
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              instance: localhost:9100
+              nodename: localhost
+            exp_annotations:
+              summary: "Host memory under memory pressure (instance localhost:9100)"
+              description: "The node is under heavy memory pressure. High rate of major page faults\n  VALUE = 2000\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
