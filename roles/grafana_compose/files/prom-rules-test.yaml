@@ -76,3 +76,46 @@ tests:
             exp_annotations:
               summary: Host high CPU load (instance localhost:9100)
               description: "CPU load is > 80%\n  VALUE = 1\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
+
+  - interval: 1m
+    input_series:
+      - series: 'node_disk_read_bytes_total{instance="localhost:9100"}'
+        values: '0+10000000000x20'
+      - series: 'node_uname_info{instance="localhost:9100", nodename="localhost"}'
+        values: '1x20'
+
+    # Unit test for the "HostUnusualDiskReadRate" alerting rule.
+    alert_rule_test:
+      - eval_time: 4m
+        alertname: HostUnusualDiskReadRate
+        exp_alerts:
+      - eval_time: 10m
+        alertname: HostUnusualDiskReadRate
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              instance: localhost:9100
+              nodename: localhost
+            exp_annotations:
+              summary: Host unusual disk read rate (instance localhost:9100)
+              description: "Disk is probably reading too much data (> 50 MB/s)\n  VALUE = 158.94571940104166\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
+
+  - interval: 1m
+    input_series:
+      - series: 'node_disk_written_bytes_total{instance="localhost:9100"}'
+        values: '0+10000000000x20'
+      - series: 'node_uname_info{instance="localhost:9100", nodename="localhost"}'
+        values: '1x20'
+
+    # Unit test for the "HostUnusualDiskWriteRate" alerting rule.
+    alert_rule_test:
+      - eval_time: 5m
+        alertname: HostUnusualDiskWriteRate
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              instance: localhost:9100
+              nodename: localhost
+            exp_annotations:
+              summary: Host unusual disk write rate (instance localhost:9100)
+              description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = 158.94571940104166\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
