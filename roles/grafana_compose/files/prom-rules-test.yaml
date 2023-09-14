@@ -38,6 +38,11 @@ tests:
 
     # Unit test for the "HostOutOfMemory" alerting rule.
     alert_rule_test:
+      # No alert at minute 4
+      - eval_time: 4m
+        alertname: HostOutOfMemory
+        exp_alerts:
+      # Alert after hiting <10% for 2 minutes
       - eval_time: 5m
         alertname: HostOutOfMemory
         exp_alerts:
@@ -48,3 +53,26 @@ tests:
             exp_annotations:
               summary: Host out of memory (instance localhost:9100)
               description: "Node memory is filling up (< 10% left)\n  VALUE = 7.000000000000001\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
+
+  - interval: 1m
+    input_series:
+      - series: 'node_cpu_seconds_total{mode="user", instance="localhost:9100"}'
+        values: '0+60x30'
+      - series: 'node_uname_info{instance="localhost:9100", nodename="localhost"}'
+        values: '1x30'
+
+    # Unit test for the "HostHighCpuLoad" alerting rule.
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: HostHighCpuLoad
+        exp_alerts:
+      - eval_time: 20m
+        alertname: HostHighCpuLoad
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              instance: localhost:9100
+              nodename: localhost
+            exp_annotations:
+              summary: Host high CPU load (instance localhost:9100)
+              description: "CPU load is > 80%\n  VALUE = 1\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
