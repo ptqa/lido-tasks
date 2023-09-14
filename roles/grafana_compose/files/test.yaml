@@ -4,6 +4,7 @@
 rule_files:
   - prom-rules.yaml
   - prom-docker-rules.yaml
+  - prom-loki-rules.yaml
 
 evaluation_interval: 1m
 
@@ -136,3 +137,21 @@ tests:
             exp_annotations:
               summary: Container absent (instance )
               description: "A container is absent for 5 min\n  VALUE = 1\n  LABELS = map[]"
+
+  - interval: 1m
+    input_series:
+      - series: 'loki_panic_total{instance="localhost:3100", job="docker", namespace="default"}'
+        values: '1+1x20'
+
+    # Unit test for the "LokiRequestPanic" alerting rule.
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: LokiRequestPanic
+        exp_alerts:
+          - exp_labels:
+              severity: critical
+              job: docker
+              namespace: default
+            exp_annotations:
+              summary: Loki request panic (instance )
+              description: "The docker is experiencing 10.00% increase of panics\n  VALUE = 10\n  LABELS = map[job:docker namespace:default]"
