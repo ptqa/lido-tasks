@@ -32,4 +32,7 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../roles:~/.ansible/roles
 
 verifier:
-  name: ansible
+  name: testinfra
+  directory: ../tests/
+  options:
+    sudo: true
