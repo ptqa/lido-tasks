@@ -46,5 +46,6 @@
         gc_prometheus_bind_addresses: ["0.0.0.0"]
         gc_grafana_bind_addresses: ["0.0.0.0"]
         gc_grafana_password: "{{ grafana_pass }}"
+        gc_cadvisor_exporters: ["cadvisor:8080"]
         gc_node_exporters: ["{{ ansible_default_ipv4.address }}:9100"]
     - role: grafana_manage

@@ -5,6 +5,7 @@ rule_files:
   - prom-rules.yaml
   - prom-docker-rules.yaml
   - prom-loki-rules.yaml
+  - prom-tail-rules.yaml
 
 evaluation_interval: 1m
 
