@@ -3,6 +3,7 @@
 
 rule_files:
   - prom-rules.yaml
+  - prom-docker-rules.yaml
 
 evaluation_interval: 1m
 
@@ -119,3 +120,19 @@ tests:
             exp_annotations:
               summary: Host unusual disk write rate (instance localhost:9100)
               description: "Disk is probably writing too much data (> 50 MB/s)\n  VALUE = 158.94571940104166\n  LABELS = map[instance:localhost:9100 nodename:localhost]"
+
+  - interval: 1m
+    input_series:
+      - series: 'container_last_seen{instance="cadvisor:8080"}'
+        values: '1 stale'
+
+    # Unit test for the "ContainerAbsent" alerting rule.
+    alert_rule_test:
+      - eval_time: 9m
+        alertname: ContainerAbsent
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+            exp_annotations:
+              summary: Container absent (instance )
+              description: "A container is absent for 5 min\n  VALUE = 1\n  LABELS = map[]"
