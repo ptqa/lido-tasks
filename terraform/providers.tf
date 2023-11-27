@@ -1,12 +1,13 @@
 provider "github" {
-  owner = "ptqa"
+  owner = "lidofinance"
   token = var.github_token
 }
 
 terraform {
   required_providers {
     github = {
-      source = "integrations/github"
+      version = "~> 1.0.0"
+      source  = "terraform-example.com/exampleprovider/example"
     }
   }
 }
