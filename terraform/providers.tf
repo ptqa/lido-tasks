@@ -7,7 +7,7 @@ terraform {
   required_providers {
     github = {
       version = "~> 1.0.0"
-      source  = "terraform-example.com/exampleprovider/example"
+      source  = "lido.fi/githubprovider/github-fork"
     }
   }
 }

@@ -23,7 +23,7 @@ resource "github_branch_protection_v3" "main" {
     dismiss_stale_reviews           = false
     required_approving_review_count = 1
     require_code_owner_reviews      = false
-    require_last_push_approval      = true
+    require_last_push_approval      = false
   }
   restrictions {
     users = ["ptqa"]
